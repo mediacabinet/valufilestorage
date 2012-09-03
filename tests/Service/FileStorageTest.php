@@ -53,7 +53,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 		self::$storage = $loader->getServiceInstance('FileStorage', 'FoafFileStorage\\Service\\FileStorage');
 	}
 
-	public function testAddFile(){
+	public function testUpload(){
 		
 		$dir = realpath(dirname(__FILE__) . '/../resources');
 		
@@ -68,7 +68,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 		foreach($files as $file){
 			
 			$url	= 'file://'.$file;
-			$info	= self::$storage->addFile($url);
+			$info	= self::$storage->upload($url);
 			
 			$this->assertNotNull(
 				$info,
@@ -82,12 +82,12 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/**
-	 * @depends testAddFile
+	 * @depends testUpload
 	 */
-	public function testDeleteFile(){
+	public function testDelete(){
 		if(sizeof(self::$saved)){
 			foreach (self::$saved as $url){
-				$success = self::$storage->deleteFile($url);
+				$success = self::$storage->delete($url);
 				
 				$this->assertTrue($success);
 			}
@@ -123,7 +123,7 @@ class FileStorageTest extends \PHPUnit_Framework_TestCase
 			$url = 'file://'.$file;
 			
 			try{
-				self::$storage->addFile($url);
+				self::$storage->upload($url);
 			}
 			catch (\FoafFileStorage\Service\Exception\RestrictedUrlException $e){
 				continue;
