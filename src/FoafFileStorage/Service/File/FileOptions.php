@@ -1,9 +1,9 @@
 <?php
-namespace FoafFileStorage\Service\FileStorage;
+namespace FoafFileStorage\Service\File;
 
 use Zend\Stdlib\AbstractOptions;
 
-class FileStorageOptions extends AbstractOptions{
+class FileOptions extends AbstractOptions{
     
     /**
      * Array of whitelist patterns
@@ -103,6 +103,4 @@ class FileStorageOptions extends AbstractOptions{
             $this->deleteBatchSize = 0;
         }
     }
-
-
 }

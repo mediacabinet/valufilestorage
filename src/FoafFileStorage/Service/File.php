@@ -1,13 +1,13 @@
 <?php
 namespace FoafFileStorage\Service;
 
-use Foaf\Service\Exception\OperationException,
-	Foaf\Service\AbstractService,
-	Foaf\Service\Broker,
-	Foaf\Service\Response\Http\Binary as BinaryResponse,
-	FoafFileStorage\Service\Exception,
-	FoafFileStorage\Model\File,
-	Doctrine\ODM\MongoDB\DocumentManager;
+use Foaf\Service\Exception\OperationException;
+use Foaf\Service\AbstractService;
+use Foaf\Service\Broker;
+use Foaf\Service\Response\Http\Binary as BinaryResponse;
+use FoafFileStorage\Service\Exception;
+use FoafFileStorage\Model;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * Local file storage implementation
@@ -15,10 +15,10 @@ use Foaf\Service\Exception\OperationException,
  * @author juhasuni
  *
  */
-class FileStorage extends AbstractService
+class File extends AbstractService
 {
 	
-	protected $optionsClass = 'FoafFileStorage\Service\FileStorage\FileStorageOptions';
+	protected $optionsClass = 'FoafFileStorage\Service\File\FileOptions';
 	
 	/**
 	 * Document manager
@@ -64,7 +64,7 @@ class FileStorage extends AbstractService
 	 * @param array $metadata File metadata
 	 * @throws \Exception
 	 */
-	public function addFile($url, array $metadata = array())
+	public function upload($url, array $metadata = array())
 	{
 		$file		= null;
 		$url		= trim($url);
@@ -121,7 +121,7 @@ class FileStorage extends AbstractService
 		        $metadata
 	        );
 			
-			$file = new \FoafFileStorage\Model\File(
+			$file = new Model\File(
 				$storageUrl,
 				$specs
 			);
@@ -137,13 +137,43 @@ class FileStorage extends AbstractService
 	}
 	
 	/**
+	 * Get file as a complete HTTP response
+	 *
+	 * @param string $url
+	 * @return BinaryResponse|null
+	 * @throws Exception\FileNotFoundException
+	 */
+	public function download($url){
+	     
+	    if(!$this->isSupportedScheme($url)){
+	        return false;
+	    }
+	     
+	    $response = new BinaryResponse();
+	     
+	    try{
+	        $file = $this->getFileByUrl($url);
+	    }
+	    catch (Exception\FileNotFoundException $e){
+	        $response->setStatusCode(404);
+	        $response->setReasonPhrase($e->getMessage());
+	    }
+	     
+	    $response->setBytes($file->getBytes());
+	    $response->headers()->addHeaderLine('Content-Type', $file->getMimeType());
+	    $response->headers()->addHeaderLine('Content-Disposition', 'attachment; filename='.$file->getName());
+	     
+	    return $response;
+	}
+	
+	/**
 	 * Read file data
 	 * 
 	 * @param string $url
 	 * @return string|boolean
 	 * @throws Exception\FileNotFoundException
 	 */
-	public function readFile($url){
+	public function read($url){
 	    
 	    if(!$this->isSupportedScheme($url)){
 	        return false;
@@ -160,7 +190,7 @@ class FileStorage extends AbstractService
 	 * @param string $data
 	 * @return boolean
 	 */
-	public function writeFile($url, $data){
+	public function write($url, $data){
 	    
 	    if(!$this->isSupportedScheme($url)){
 	        return false;
@@ -174,42 +204,12 @@ class FileStorage extends AbstractService
 	}
 	
 	/**
-	 * Get file as a complete HTTP response
-	 * 
-	 * @param string $url
-	 * @return BinaryResponse|null
-	 * @throws Exception\FileNotFoundException
-	 */
-	public function downloadFile($url){
-	    
-	    if(!$this->isSupportedScheme($url)){
-	        return false;
-	    }
-	    
-	    $response = new BinaryResponse();
-	    
-	    try{
-	    	$file = $this->getFileByUrl($url);
-	    }
-	    catch (Exception\FileNotFoundException $e){
-	        $response->setStatusCode(404);
-	        $response->setReasonPhrase($e->getMessage());
-	    }
-	    
-	    $response->setBytes($file->getBytes());
-	    $response->headers()->addHeaderLine('Content-Type', $file->getMimeType());
-	    $response->headers()->addHeaderLine('Content-Disposition', 'attachment; filename='.$file->getName());
-	    
-	    return $response;
-	}
-	
-	/**
 	 * Retrieve metadata for file
 	 * 
 	 * @param string $url    File URL
 	 * @return array|null File info (url, filesize, mimeType)
 	 */
-	public function getFileMetadata($url)
+	public function getMetadata($url)
 	{
 	    if(!$this->isSupportedScheme($url)){
 	        return null;
@@ -227,7 +227,7 @@ class FileStorage extends AbstractService
 	 * @param string $url   File URL in filesystem
 	 * @return boolean		True if file was found and removed
 	 */
-	public function deleteFile($url)
+	public function delete($url)
 	{
 	    
 	    if(!$this->isSupportedScheme($url)){
@@ -255,7 +255,7 @@ class FileStorage extends AbstractService
 	 * 
 	 * @return int Number of files deleted
 	 */
-	public function deleteAllFiles()
+	public function deleteAll()
 	{
 	    $batchSize = $this->getOption('delete_batch_size');
 	     
@@ -368,7 +368,7 @@ class FileStorage extends AbstractService
 	 * @param File $file
 	 * @return array
 	 */
-	protected function fetchFileMetadata(File $file){
+	protected function fetchFileMetadata(Model\File $file){
 		return $file->toArray(array(
 			'url',
 			'filesize',

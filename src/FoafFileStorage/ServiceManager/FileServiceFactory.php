@@ -1,11 +1,11 @@
 <?php
 namespace FoafFileStorage\ServiceManager;
 
-use FoafFileStorage\Service\FileStorage,
-    Zend\ServiceManager\FactoryInterface,
-    Zend\ServiceManager\ServiceLocatorInterface;
+use FoafFileStorage\Service\File;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-class FileStorageFactory implements FactoryInterface
+class FileServiceFactory implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
@@ -13,7 +13,7 @@ class FileStorageFactory implements FactoryInterface
         $broker = $serviceLocator->get('ServiceBroker');
         $dm = $serviceLocator->get('FoafFileStorageDm');
         
-        $service = new FileStorage($broker, $dm);
+        $service = new File($broker, $dm);
         return $service;
     }
 }
