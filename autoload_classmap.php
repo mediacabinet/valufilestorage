@@ -1,4 +1,4 @@
 <?php
 return array(
-    'FoafFileStorage\Module' => __DIR__ . '/Module.php'
+    'ValuFileStorage\Module' => __DIR__ . '/Module.php'
 );

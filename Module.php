@@ -1,5 +1,5 @@
 <?php
-namespace FoafFileStorage;
+namespace ValuFileStorage;
 
 use Zend\ModuleManager\Feature,
     Zend\EventManager\Event;
@@ -35,6 +35,6 @@ class Module
      */
     public function getConfig()
     {
-        return \Zend\Config\Factory::fromFile(__DIR__ . '/config/module.ini');
+        return include __DIR__ . '/config/module.config.php';
     }
 }
