@@ -158,7 +158,7 @@ class LocalFile extends AbstractFileService
         $this->testUrl($url);
          
         $file = $this->getFileByUrl($url);
-        $tmpFile = tempnam(sys_get_temp_dir(), 'foaf-temp');
+        $tmpFile = tempnam(sys_get_temp_dir(), 'valu-temp');
         
         copy($file, $tmpFile);
          
@@ -320,7 +320,7 @@ class LocalFile extends AbstractFileService
      */
     protected function makeFile($sourceUrl, $path)
     {
-        $id       = UuidGenerator::generate(UuidGenerator::VERSION_3, uniqid(), 'foaf-file-storage');
+        $id       = UuidGenerator::generate(UuidGenerator::VERSION_3, uniqid(), 'valu-file-storage');
         $basename = basename($this->parsePath($sourceUrl));
         $dir      = $path . '/' . $id;
         

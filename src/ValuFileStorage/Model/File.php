@@ -6,7 +6,7 @@ use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * @ODM\Document(collection="foaf_file_storage")
+ * @ODM\Document(collection="valu_file_storage")
  */
 class File
 {

@@ -41,7 +41,7 @@ return [
             'tmp' => 'file:///var/tmp',
             'tmp2' => 'file:///tmp',
             'tests' => 'file://.*/module/[^/]+/tests/resources/.*',
-            'local' => 'http://zf2b\\.foaf\\.fi/tests/.*',
+            'local' => 'http://zf2b\\.valu\\.fi/tests/.*',
             'dev'   => 'http://development.mediacabinet.fi/.*'
         ]
     ],

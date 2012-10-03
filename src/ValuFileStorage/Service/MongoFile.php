@@ -172,7 +172,7 @@ class MongoFile extends AbstractFileService
 	{
 	    $this->testUrl($url);
 	    
-	    $tmpFile = tempnam(sys_get_temp_dir(), 'foaf-temp');
+	    $tmpFile = tempnam(sys_get_temp_dir(), 'valu-temp');
 	    
 	    $file = $this->getFileByUrl($url);
 	    $file->getFile()->write($tmpFile);
@@ -276,7 +276,7 @@ class MongoFile extends AbstractFileService
 	 * @return string			Mongodb URL in form mongo://<ID>/<FILENAME>
 	 */
 	protected function generateUrl($sourceUrl){
-	    $id = UuidGenerator::generate(UuidGenerator::VERSION_3, uniqid(), 'foaf-file-storage');
+	    $id = UuidGenerator::generate(UuidGenerator::VERSION_3, uniqid(), 'valu-file-storage');
 	    $basename = basename(parse_url($sourceUrl, PHP_URL_PATH));
 	
 	    return $this->getOption('url_scheme') . ':///' . $id . '/' .$basename;
