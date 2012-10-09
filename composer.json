@@ -1,0 +1,26 @@
+{
+    "name": "valu/valufilestorage",
+    "description": "FileStorage module",
+    "version": "0.1.0",
+    "type": "library",
+    "keywords": [
+        "valu"
+    ],
+    "homepage": "http://www.mediacabinet.fi/",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "valu/valucore": "=>0.1.0",
+        "valu/valuapp": "=>0.1.0",
+        "valu/valuuser": "=>0.1.0",
+        "zendframework/zendframework": ">=2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "ValuApp\\": "src/ValuApp",
+            "ValuApp\\Test": "tests/"
+        }
+    }
+}
