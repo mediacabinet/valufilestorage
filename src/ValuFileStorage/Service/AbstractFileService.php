@@ -17,7 +17,7 @@ abstract class AbstractFileService extends AbstractService
 	{
 	    $this->testUrl($targetUrl);
 	    
-	    $sourceUrl	= trim($sourceUrl);
+	    $sourceUrl	= $this->canonicalUrl($sourceUrl);
 	    $path       = $this->parsePath($sourceUrl);
 	    $scheme		= $this->parseScheme($sourceUrl);
 	    $bytes      = null;
@@ -55,6 +55,26 @@ abstract class AbstractFileService extends AbstractService
 	        'file' => $file,
             'bytes' => $bytes        
         );
+	}
+	
+	/**
+	 * Retrieve URL's canonical form
+	 * 
+	 * @param string $url
+	 * @return string
+	 */
+	protected function canonicalUrl($url)
+	{
+	    $url = trim($url);
+	    
+	    if (strpos($url, 'file://') === 0) {
+	        $path = $this->parsePath($url);
+	        $path = realpath($path);
+	        
+	        $url = 'file://' . $path;
+	    }
+	    
+	    return $url;
 	}
 	
 	/**
