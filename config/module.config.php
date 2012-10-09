@@ -40,6 +40,7 @@ return [
         'whitelist' => [
             'tmp' => 'file:///var/tmp',
             'tmp2' => 'file:///tmp',
+            'data' => 'file://' . realpath(__DIR__ . '/../../../data'),
             'tests' => 'file://.*/module/[^/]+/tests/resources/.*',
             'local' => 'http://zf2b\\.valu\\.fi/tests/.*',
             'dev'   => 'http://development.mediacabinet.fi/.*'
