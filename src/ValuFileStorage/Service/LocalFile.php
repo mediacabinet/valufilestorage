@@ -282,11 +282,19 @@ class LocalFile extends AbstractFileService
         if(sizeof($items) > 1 && substr($items[1], 0, 1) == '$'){
             array_shift($items);
             
-            
             $var = ltrim($items[0], '$');
             
             if (array_key_exists($var, $paths)){
                 $items[0] = $paths[$var];
+                
+                // Try to make dir if it doesn't exist
+                if (!is_dir($items[0])) {
+                    if (!mkdir($items[0], 0777, true)) {
+                        throw new TargetPathNotWritableException(
+                            'Target path for %VAR% is not writable', array('VAR' => $var));
+                    }
+                }
+                
             } else {
                 throw new Exception\InvalidTargetUrlException(
                     'Unknown path variable $%VAR% for URL %URL%',
