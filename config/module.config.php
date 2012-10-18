@@ -26,7 +26,7 @@ return [
             'options' => [
                 'url_scheme' => 'file',
                 'paths' => [
-                    'tmp' => realpath(__DIR__ . '/../../../data/filestorage/tmp')
+                    'tmp' => realpath(__DIR__ . '/../../../data/') . '/filestorage/tmp'
                 ]
             ],
         ],
