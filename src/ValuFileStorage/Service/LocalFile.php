@@ -289,8 +289,9 @@ class LocalFile extends AbstractFileService
                 
                 // Try to make dir if it doesn't exist
                 if (!is_dir($items[0])) {
+
                     if (!mkdir($items[0], 0777, true)) {
-                        throw new TargetPathNotWritableException(
+                        throw new Exception\TargetPathNotWritableException(
                             'Target path for %VAR% is not writable', array('VAR' => $var));
                     }
                 }
