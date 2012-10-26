@@ -67,6 +67,11 @@ abstract class AbstractFileService extends AbstractService
 	{
 	    $url = trim($url);
 	    
+	    // Assume local URL if scheme is missing
+	    if (strpos($url, '://') === false) {
+	        $url = 'file://' . $url;
+	    }
+	    
 	    if (strpos($url, 'file://') === 0) {
 	        $path = $this->parsePath($url);
 	        $path = realpath($path);
@@ -163,6 +168,8 @@ abstract class AbstractFileService extends AbstractService
 	{
 	    if (($scheme = parse_url($url, PHP_URL_SCHEME)) != false) {
 	        return $scheme;
+	    } elseif(strpos($url, '://') === false) {
+	        return 'file';
 	    } else {
 	        return substr($url, 0, strpos($url, '://'));
 	    }
