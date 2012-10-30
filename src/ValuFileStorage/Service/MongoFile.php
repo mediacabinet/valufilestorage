@@ -60,7 +60,7 @@ class MongoFile extends AbstractFileService
 	        $this->getDocumentManager()->persist($file);
 	
 	    } else {
-	        $file = $this->getFileByUrl($targetUrl);
+	        $file = $this->getFileByUrl($targetUrl, true);
 	    }
 	    
 	    if ($specs['file']) {
@@ -88,7 +88,7 @@ class MongoFile extends AbstractFileService
 	    
 	    $this->testUrl($url);
 	    
-	    $file = $this->getFileByUrl($url);
+	    $file = $this->getFileByUrl($url, true);
 	    return $file->getFile()->getBytes();
 	}
 	
@@ -102,7 +102,7 @@ class MongoFile extends AbstractFileService
 	public function write($url, $data){
 	    $this->testUrl($url);
 	    
-	    $file = $this->getFileByUrl($url);
+	    $file = $this->getFileByUrl($url, true);
 	    $file->setBytes($data);
 	    
 	    $this->getDocumentManager()->flush();
@@ -123,7 +123,7 @@ class MongoFile extends AbstractFileService
 	{
 	    $this->testUrl($url);
 		return $this->fetchFileMetadata(
-	        $this->getFileByUrl($url));
+	        $this->getFileByUrl($url, true));
 	}
 	
 	/**
@@ -174,7 +174,7 @@ class MongoFile extends AbstractFileService
 	    
 	    $tmpFile = tempnam(sys_get_temp_dir(), 'valu-temp');
 	    
-	    $file = $this->getFileByUrl($url);
+	    $file = $this->getFileByUrl($url, true);
 	    $file->getFile()->write($tmpFile);
 	    
 	    return $tmpFile;
@@ -192,7 +192,7 @@ class MongoFile extends AbstractFileService
 
 		try{
 		    $dm   = $this->getDocumentManager();
-		    $file = $this->getFileByUrl($url);
+		    $file = $this->getFileByUrl($url, true);
 		    $dm->remove($file);
 		    $dm->flush();
 		    
@@ -263,9 +263,11 @@ class MongoFile extends AbstractFileService
 	 */
 	protected function fetchFileMetadata(Model\File $file){
 		return array(
-		    'url' => $file->getUrl(),
-	        'filesize' => $file->getSize(),
-	        'mimeType' => $file->getMimeType()        
+		    'url'         => $file->getUrl(),
+	        'filesize'    => $file->getSize(),
+	        'mimeType'    => $file->getMimeType(),
+	        'createdAt'   => $file->getCreatedAt() ? $file->getCreatedAt()->format(DATE_ATOM) : null,
+	        'modifiedAt'  => $file->getModifiedAt() ? $file->getModifiedAt()->format(DATE_ATOM) : null,
         );
 	}
 	
@@ -289,17 +291,17 @@ class MongoFile extends AbstractFileService
 	 * @return Model\File
 	 * @throws Exception\FileNotFoundException
 	 */
-	protected function getFileByUrl($url){
+	protected function getFileByUrl($url, $throwException = false){
 	     
 	    $repository	= $this->getFileRepository();
 	    $file 		= $repository->findOneByUrl($url);
 	     
-	    if(!$file){
+	    if(!$file && $throwException){
 	    	throw new Exception\FileNotFoundException(
     	        'File not found from URL '.$url);
 	    }
 	    
-	    return $file;
+	    return $file ? $file : null;
 	}
 	
 	/**

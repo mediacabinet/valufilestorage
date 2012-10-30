@@ -13,6 +13,20 @@ abstract class AbstractFileService extends AbstractService
 {
 	protected $optionsClass = 'ValuFileStorage\Service\File\FileOptions';
 	
+	/**
+	 * Test whether or not a file exists
+	 *
+	 * @param string $url
+	 * @return boolean
+	 */
+	public function exists($url)
+	{
+	    $this->testUrl($url);
+	
+	    $file = $this->getFileByUrl($url, false);
+	    return $file !== null;
+	}
+	
 	protected function prepareInsert($sourceUrl, $targetUrl)
 	{
 	    $this->testUrl($targetUrl);
@@ -56,6 +70,14 @@ abstract class AbstractFileService extends AbstractService
             'bytes' => $bytes        
         );
 	}
+	
+	/**
+	 * Retrieve instance of file by URL
+	 * 
+	 * @param string $url
+	 * @param boolean $throwException
+	 */
+	protected abstract function getFileByUrl($url, $throwException = false);
 	
 	/**
 	 * Retrieve URL's canonical form

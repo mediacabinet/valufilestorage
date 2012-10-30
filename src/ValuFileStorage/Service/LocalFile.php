@@ -89,6 +89,7 @@ class LocalFile extends AbstractFileService
      *
      * @param string $url    File URL
      * @return array|null File info (url, filesize, mimeType)
+     * @throws \ValuFileStorage\Service\Exception\FileNotFoundException
      */
     public function getMetadata($url)
     {
@@ -242,11 +243,19 @@ class LocalFile extends AbstractFileService
         $uuid = array_pop($items);
         $path = implode(DIRECTORY_SEPARATOR, $items);
         $key  = array_search($path, $this->getOption('paths'));
+        
+        $cDate = new \DateTime();
+        $cDate->setTimestamp(filectime($file));
+        
+        $mDate = new \DateTime();
+        $mDate->setTimestamp(filemtime($file));
 
         return array(
-            'url'      => $this->getOption('url_scheme') . ':///$'.$key . '/' . $uuid . '/' . $name,
-            'filesize' => filesize($file),
-            'mimeType' => $finfo->file($file, FILEINFO_MIME_TYPE)
+            'url'          => $this->getOption('url_scheme') . ':///$'.$key . '/' . $uuid . '/' . $name,
+            'filesize'     => filesize($file),
+            'mimeType'     => $finfo->file($file, FILEINFO_MIME_TYPE),
+            'createdAt'    => $cDate->format(DATE_ATOM),
+            'modifiedAt'   => $mDate->format(DATE_ATOM),
         );
     }
     
