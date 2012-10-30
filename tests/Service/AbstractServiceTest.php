@@ -63,6 +63,19 @@ abstract class AbstractServiceTest extends TestCase
         );
     }
     
+    public function testExists()
+    {
+        $url  = $this->fileUrl('images/lake.jpg');
+        $meta = self::service()->insert($url, static::$defaultTarget);
+        
+        $this->assertTrue(self::service()->exists($meta['url']));
+    }
+    
+    public function testDoesNotExist()
+    {
+         $this->assertFalse(self::service()->exists(static::$defaultTarget . '/file-does-not-exist'));
+    }
+    
     /**
      * @expectedException \ValuFileStorage\Service\Exception\RestrictedUrlException
      */
@@ -140,6 +153,35 @@ abstract class AbstractServiceTest extends TestCase
             $meta,
             self::service()->getMetadata($meta['url'])
         );
+    }
+    
+    public function testGetMetadataInfo()
+    {
+        $url  = $this->fileUrl('documents/pdf/document.pdf');
+        $file = $this->filePath('documents/pdf/document.pdf');
+        
+        $file = self::service()->insert($url, static::$defaultTarget);
+        $meta = self::service()->getMetadata($file['url']);
+        
+        $now = new \DateTime();
+        
+        $this->assertEquals(
+            $file['url'],
+            $meta['url']     
+        );
+        
+        $this->assertEquals(
+            'application/pdf',
+            $meta['mimeType']
+        );
+        
+        $date = new \DateTime($meta['modifiedAt']);
+        $interval = $now->diff($date);
+        $this->assertTrue($interval->s < 2);
+        
+        $date = new \DateTime($meta['createdAt']);
+        $interval = $now->diff($date);
+        $this->assertTrue($interval->s < 2);
     }
     
     public function testReplace()

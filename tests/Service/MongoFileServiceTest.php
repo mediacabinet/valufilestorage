@@ -46,10 +46,7 @@ class MongoFileServiceTest extends AbstractServiceTest
 			}
 		}
 	}*/
-	
-	/**
-	 * @depends testUpload
-	 */
+
     /*
 	public function testDelete(){
 		if(sizeof(self::$saved)){
