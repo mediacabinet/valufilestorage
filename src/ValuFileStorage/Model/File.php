@@ -40,6 +40,18 @@ class File
 	 */
 	protected $mimeType;
 	
+	/**
+	 * @ODM\Date
+	 * @var DateTime
+	 */
+	protected $createdAt;
+	
+	/**
+	 * @ODM\Date
+	 * @var DateTime
+	 */
+	protected $modifiedAt;
+	
 	/** @ODM\Field */
     private $uploadDate;
 
@@ -157,6 +169,26 @@ class File
 	}
 	
 	/**
+     * Retrieve last modification time
+     * 
+     * @return \DateTime
+	 */
+	public function getModifiedAt()
+	{
+	    return $this->modifiedAt;
+	}
+	
+	/**
+	 * Retrieve creation time
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreatedAt()
+	{
+	    return $this->createdAt;
+	}
+	
+	/**
 	 * Get filesize
 	 * 
 	 * @return int
@@ -204,5 +236,29 @@ class File
 	protected function setUrl($url)
 	{
 	    $this->url = $url;
+	}
+	
+	/**
+	 * Reset creation timestamp to curren time
+	 *
+	 * Onche the timestamp is set, it cannot be
+	 * changed via this method.
+	 *
+	 * @ODM\PrePersist
+	 */
+	public function resetCreationTimestamp()
+	{
+        $this->createdAt = new \DateTime();
+        $this->modifiedAt = $this->createdAt;
+	}
+	
+	/**
+	 * Reset update timestamp to current time
+	 *
+	 * @ODM\PreUpdate
+	 */
+	public function resetUpdateTimestamp()
+	{
+	    $this->modifiedAt = new \DateTime();
 	}
 }
