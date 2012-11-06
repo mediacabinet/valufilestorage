@@ -26,7 +26,8 @@ return [
             'options' => [
                 'url_scheme' => 'file',
                 'paths' => [
-                    'tmp' => realpath(__DIR__ . '/../../../data/') . '/filestorage/tmp'
+                    'tmp' => realpath(__DIR__ . '/../../../data/') . '/filestorage/tmp',
+                    'files' => realpath(__DIR__ . '/../../../data/') . '/filestorage/files',
                 ]
             ],
         ],
@@ -43,7 +44,8 @@ return [
             'data' => 'file://' . realpath(__DIR__ . '/../../../data'),
             'tests' => 'file://.*/module/[^/]+/tests/resources/.*',
             'local' => 'http://zf2b\\.valu\\.fi/tests/.*',
-            'dev'   => 'http://development.mediacabinet.fi/.*'
+            'dev'   => 'http://development.mediacabinet.fi/.*',
+            'showell' => 'file:///var/www/showell/data/showell'
         ]
     ],
 ];
