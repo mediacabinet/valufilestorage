@@ -1,6 +1,8 @@
 <?php
 namespace ValuFileStorage\Test\Service;
 
+use ValuFileStorage\Model\File;
+
 class MongoFileServiceTest extends AbstractServiceTest
 {
 	protected static $serviceName = 'ValuFileStorageMongoFile';
@@ -63,7 +65,6 @@ class MongoFileServiceTest extends AbstractServiceTest
 	*/
 	
 	public function testSaveRestrictedFile(){
-		return;
 		
 		/**
 		 * Set restriction options

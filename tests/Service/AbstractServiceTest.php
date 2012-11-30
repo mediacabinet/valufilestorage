@@ -163,8 +163,6 @@ abstract class AbstractServiceTest extends TestCase
         $file = self::service()->insert($url, static::$defaultTarget);
         $meta = self::service()->getMetadata($file['url']);
         
-        $now = new \DateTime();
-        
         $this->assertEquals(
             $file['url'],
             $meta['url']     
@@ -175,13 +173,13 @@ abstract class AbstractServiceTest extends TestCase
             $meta['mimeType']
         );
         
+        $now = new \DateTime();
+        
         $date = new \DateTime($meta['modifiedAt']);
-        $interval = $now->diff($date);
-        $this->assertTrue($interval->s < 2);
+        $this->assertTrue(($now->getTimestamp()-$date->getTimestamp()) < 2);
         
         $date = new \DateTime($meta['createdAt']);
-        $interval = $now->diff($date);
-        $this->assertTrue($interval->s < 2);
+        $this->assertTrue(($now->getTimestamp()-$date->getTimestamp()) < 2);
     }
     
     public function testReplace()

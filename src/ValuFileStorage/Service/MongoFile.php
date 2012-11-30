@@ -295,7 +295,7 @@ class MongoFile extends AbstractFileService
 	     
 	    $repository	= $this->getFileRepository();
 	    $file 		= $repository->findOneByUrl($url);
-	     
+	    
 	    if(!$file && $throwException){
 	    	throw new Exception\FileNotFoundException(
     	        'File not found from URL '.$url);
