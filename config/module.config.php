@@ -3,7 +3,7 @@ return [
     'doctrine' => [
         'mongodb' => [
             'ns' => [
-                'ValuFileStorage\\Model' => 'module/ValuFileStorage/src/ValuFileStorage/Model',
+                'ValuFileStorage\\Model' => 'vendor/valu/valufilestorage/src/ValuFileStorage/Model',
             ],
         ],
     ],
@@ -26,23 +26,23 @@ return [
             'options' => [
                 'url_scheme' => 'file',
                 'paths' => [
-                    'tmp' => realpath(__DIR__ . '/../../../data/') . '/filestorage/tmp',
-                    'files' => realpath(__DIR__ . '/../../../data/') . '/filestorage/files',
+                    'tmp' => 'data/filestorage/tmp',
+                    'files' => 'data/filestorage/files',
                 ]
             ],
         ],
         'ValuFileStorageAcl' => [
             'name' => 'FileStorage.Acl',
             'class' => 'ValuFileStorage\\Service\\Acl',
-            'config' => 'module/ValuFileStorage/config/acl.config.php',
+            'config' => 'vendor/valu/valufilestorage/config/acl.config.php',
         ],
     ],
     'file_storage' => [
         'whitelist' => [
             'tmp' => 'file:///var/tmp',
             'tmp2' => 'file:///tmp',
-            'data' => 'file://' . realpath(__DIR__ . '/../../../data'),
-            'tests' => 'file://.*/module/[^/]+/tests/resources/.*',
+            'data' => 'file://' . realpath('data'),
+            'tests' => 'file://.*/vendor/[^/]+/tests/resources/.*',
             'local' => 'http://zf2b\\.valu\\.fi/tests/.*',
             'dev'   => 'http://development.mediacabinet.fi/.*',
             'showell' => 'file:///var/www/showell/data/showell'
