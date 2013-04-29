@@ -1,0 +1,11 @@
+<phpunit bootstrap="./bootstrap.php" colors="true">
+    <groups>
+        <exclude>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist>
+        </whitelist>
+    </filter>
+</phpunit>
