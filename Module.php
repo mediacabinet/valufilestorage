@@ -1,40 +1,7 @@
 <?php
-namespace ValuFileStorage;
-
-use Zend\ModuleManager\Feature,
-    Zend\EventManager\Event;
-
-class Module
-    implements Feature\AutoloaderProviderInterface, Feature\ConfigProviderInterface
-{
-    
-    /**
-     * getAutoloaderConfig() defined by AutoloaderProvider interface.
-     * 
-     * @see AutoloaderProvider::getAutoloaderConfig()
-     * @return array
-     */
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__
-                ),
-            ),
-        );
-    }
-    
-    /**
-     * getConfig implementation for ConfigListener
-     * 
-     * @return \Zend\Config\Ini
-     */
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-}
+/**
+ * This file is placed here for compatibility with Zendframework 2's ModuleManager.
+ * It allows usage of this module even without composer.
+ * The original Module.php is in 'src/ValuFileStorage' in order to respect PSR-0
+ */
+require_once __DIR__ . '/src/ValuFileStorage/Module.php';
