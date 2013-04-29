@@ -13,14 +13,14 @@
     },
     "require-dev": {
         "valu/valucore": ">=0.1.0",
-        "valu/valuapp": ">=0.1.0",
         "valu/valuuser": ">=0.1.0",
-        "zendframework/zendframework": ">=2.0"
+        "zendframework/zendframework": ">=2.0",
+        "doctrine/doctrine-mongo-odm-module": "dev-master"
     },
     "autoload": {
         "psr-0": {
-            "ValuApp\\": "src/ValuApp",
-            "ValuApp\\Test": "tests/"
+            "ValuFileStorage\\": "src/",
+            "ValuFileStorageTest\\": "tests/"
         }
     }
 }
