@@ -1,40 +1,40 @@
 <?php
 return [
     'doctrine' => [
-        'mongodb' => [
-            'ns' => [
-                'ValuFileStorage\\Model' => 'vendor/valu/valufilestorage/src/ValuFileStorage/Model',
-            ],
-        ],
-    ],
-    'service_manager' => [
-        'factories' => [
-            'ValuFileStorageDm' => 'ValuFileStorage\\ServiceManager\\DocumentManagerFactory',
-        ],
-    ],
-    'services' => [
-        'ValuFileStorageMongoFile' => [
-            'name' => 'FileStorage.File',
-            'factory' => 'ValuFileStorage\\ServiceManager\\MongoFileServiceFactory',
-            'options' => [
-                'url_scheme' => 'mongofs',
-            ],
-        ],
-        'ValuFileStorageLocalFile' => [
-            'name' => 'FileStorage.File',
-            'factory' => 'ValuFileStorage\\ServiceManager\\LocalFileServiceFactory',
-            'options' => [
-                'url_scheme' => 'file',
-                'paths' => [
-                    'tmp' => 'data/filestorage/tmp',
-                    'files' => 'data/filestorage/files',
+        'driver' => [
+            'odm_default' => [
+                'drivers' => [
+                    'ValuFileStorage\Model' => 'ValuFileStorage'
                 ]
             ],
-        ],
-        'ValuFileStorageAcl' => [
-            'name' => 'FileStorage.Acl',
-            'class' => 'ValuFileStorage\\Service\\Acl',
-            'config' => 'vendor/valu/valufilestorage/config/acl.config.php',
+            'ValuFileStorage' => [
+                'class' => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                'paths' => [
+                    __DIR__ . '/../src/ValuFileStorage/Model'
+                ]
+            ]
+        ]
+    ],
+    'valu_so' => [
+        'services' => [
+            'ValuFileStorageMongoFile' => [
+                'name' => 'FileStorage.File',
+                'factory' => 'ValuFileStorage\\Service\\MongoFileServiceFactory',
+                'options' => [
+                    'url_scheme' => 'mongofs',
+                ],
+            ],
+            'ValuFileStorageLocalFile' => [
+                'name' => 'FileStorage.File',
+                'factory' => 'ValuFileStorage\\Service\\LocalFileServiceFactory',
+                'options' => [
+                    'url_scheme' => 'file',
+                    'paths' => [
+                        'tmp' => 'data/filestorage/tmp',
+                        'files' => 'data/filestorage/files',
+                    ]
+                ],
+            ],
         ],
     ],
     'file_storage' => [
