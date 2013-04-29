@@ -1,7 +1,7 @@
 <?php
 namespace ValuFileStorage\Service\Exception;
 
-use Valu\Service\Exception\ServiceException;
+use ValuSo\Exception\ServiceException;
 
 class TargetPathNotWritableException extends ServiceException
 {

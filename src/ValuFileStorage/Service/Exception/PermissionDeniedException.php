@@ -2,7 +2,7 @@
 namespace ValuFileStorage\Service\Exception;
 
 class PermissionDeniedException 
-    extends \Valu\Service\Exception\PermissionDeniedException
+    extends \ValuSo\Exception\PermissionDeniedException
 {
     protected $code = 2002;
 }

@@ -1,9 +1,9 @@
 <?php
 namespace ValuFileStorage\Service;
 
-use Valu\Utils\UuidGenerator;
 use ValuFileStorage\Service\Exception;
 use ValuFileStorage\Model;
+use ValuSo\Annotation as ValuService;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -12,11 +12,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  * @author juhasuni
  *
  */
-class MongoFile extends AbstractFileService
+class MongoFileService extends AbstractFileService
 {
-	
-	protected $optionsClass = 'ValuFileStorage\Service\File\FileOptions';
-	
 	/**
 	 * Document manager
 	 *
@@ -27,12 +24,7 @@ class MongoFile extends AbstractFileService
 	public function __construct(DocumentManager $documentManager){
 	    $this->setDocumentManager($documentManager);
 	}
-	
-	public static function version()
-	{
-	    return '1.0';
-	}
-	
+
 	/**
 	 * Add file to storage
 	 *
@@ -240,6 +232,8 @@ class MongoFile extends AbstractFileService
 	 *
 	 * @param DocumentManager $dm
 	 * @return FileStorage
+	 * 
+	 * @ValuService\Exclude
 	 */
 	public function setDocumentManager(DocumentManager $dm){
 	    $this->dm = $dm;
@@ -250,6 +244,8 @@ class MongoFile extends AbstractFileService
 	 * Retrieve document manager instance
 	 *
 	 * @return DocumentManager
+	 * 
+	 * @ValuService\Exclude
 	 */
 	public function getDocumentManager(){
 	    return $this->dm;
@@ -278,7 +274,7 @@ class MongoFile extends AbstractFileService
 	 * @return string			Mongodb URL in form mongo://<ID>/<FILENAME>
 	 */
 	protected function generateUrl($sourceUrl){
-	    $id = UuidGenerator::generate(UuidGenerator::VERSION_3, uniqid(), 'valu-file-storage');
+	    $id       = $this->generateUuid();
 	    $basename = basename(parse_url($sourceUrl, PHP_URL_PATH));
 	
 	    return $this->getOption('url_scheme') . ':///' . $id . '/' .$basename;

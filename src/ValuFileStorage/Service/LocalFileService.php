@@ -1,10 +1,8 @@
 <?php
 namespace ValuFileStorage\Service;
 
-use Valu\Utils\UuidGenerator;
 use ValuFileStorage\Service\Exception;
 use ValuFileStorage\Model;
-use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * Local file storage implementation
@@ -12,14 +10,9 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  * @author juhasuni
  *
  */
-class LocalFile extends AbstractFileService
+class LocalFileService extends AbstractFileService
 {
-    protected $optionsClass = 'ValuFileStorage\Service\File\LocalFileOptions';
-    
-    public static function version()
-    {
-        return '0.1';
-    }
+    protected $optionsClass = 'ValuFileStorage\Service\LocalFileServiceOptions';
     
     /**
      * Add file to storage
@@ -40,7 +33,6 @@ class LocalFile extends AbstractFileService
         // Create a new file or overwrite existing
         if (is_dir($path)) {
             $file = $this->makeFile($sourceUrl, $path);
-    
         } else {
             $file = $path;
         }
@@ -108,18 +100,19 @@ class LocalFile extends AbstractFileService
     {
         if ($url !== null) {
             $this->testUrl($url);
-            $path = $this->resolvePath($url);
+            $path = $this->resolvePath($url, true);
         } else {
             $path = '/';
         }
         
-        if ($path == '/') {
+        if ($path === '/') {
             $paths = $this->getOption('paths');
         } else {
             $paths = array($path);
         }
         
         $size = 0;
+        $paths = array_unique($paths);
         
         foreach($paths as $path){
             $iterator = new \RecursiveIteratorIterator(
@@ -210,6 +203,8 @@ class LocalFile extends AbstractFileService
             $paths = array($path);
         }
         
+        $paths = array_unique($paths);
+        
         // Iterate each directory recursively and remove
         // sub directories and files
         foreach ($paths as $dir) {
@@ -219,6 +214,11 @@ class LocalFile extends AbstractFileService
                 \RecursiveIteratorIterator::CHILD_FIRST);
             
             foreach($iterator as $fileInfo){
+                
+                if ($fileInfo->getFileName() === '.' || $fileInfo->getFileName() === '..') {
+                    continue;
+                }
+                
                 if ($fileInfo->isFile() && is_writable($fileInfo->getPathname())) {
                     unlink($fileInfo->getPathname());
                 } elseif ($fileInfo->isDir() && is_writable($fileInfo->getPathname())) {
@@ -279,10 +279,11 @@ class LocalFile extends AbstractFileService
      * Resolve path in local file system for URL
      * 
      * @param string $url
+     * @param boolean $allowRoot
      * @throws Exception\InvalidTargetUrlException
      * @return string
      */
-    protected function resolvePath($url)
+    protected function resolvePath($url, $allowRoot = false)
     {
         $paths = $this->getOption('paths');
         $path  = $this->parsePath($url);
@@ -311,8 +312,14 @@ class LocalFile extends AbstractFileService
                     array('VAR' => $var, 'URL' => $url));
             }
         } else {
+            
+            if ($allowRoot && $path === '/') {
+                return $path;
+            }
+            
             $valid = false;
             
+            $paths = array_unique($paths);
             foreach ($paths as $allowed) {
                 if(strpos($path, $allowed) === 0) {
                     $valid = true;
@@ -338,7 +345,7 @@ class LocalFile extends AbstractFileService
      */
     protected function makeFile($sourceUrl, $path)
     {
-        $id       = UuidGenerator::generate(UuidGenerator::VERSION_3, uniqid(), 'valu-file-storage');
+        $id       = $this->generateUuid();
         $basename = basename($this->parsePath($sourceUrl));
         $dir      = $path . '/' . $id;
         

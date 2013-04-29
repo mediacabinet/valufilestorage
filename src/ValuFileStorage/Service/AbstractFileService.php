@@ -1,18 +1,29 @@
 <?php
 namespace ValuFileStorage\Service;
 
-use Valu\Service\AbstractService;
+use ValuSo\Feature;
+use ValuSo\Annotation as ValuService;
+use Doctrine\ODM\MongoDB\Id\UuidGenerator;
 
 /**
  * Local file storage implementation
  * 
  * @author juhasuni
  *
+ * @ValuService\Context("native")
  */
-abstract class AbstractFileService extends AbstractService
+abstract class AbstractFileService
+    implements Feature\ConfigurableInterface
 {
-	protected $optionsClass = 'ValuFileStorage\Service\File\FileOptions';
+    use Feature\OptionsTrait;
+    
+	protected $optionsClass = 'ValuFileStorage\Service\FileServiceOptions';
 	
+	/**
+     * @var \Doctrine\ODM\MongoDB\Id\UuidGenerator
+	 */
+	protected $uuidGenerator;
+
 	/**
 	 * Test whether or not a file exists
 	 *
@@ -27,6 +38,13 @@ abstract class AbstractFileService extends AbstractService
 	    return $file !== null;
 	}
 	
+	/**
+     * Prepare file insertion
+     * 
+     * @param string $sourceUrl
+     * @param string $targetUrl
+     * @return array
+	 */
 	protected function prepareInsert($sourceUrl, $targetUrl)
 	{
 	    $this->testUrl($targetUrl);
@@ -214,5 +232,19 @@ abstract class AbstractFileService extends AbstractService
 	        $url = $prefix . 'localhost' . substr($url, strlen($prefix));
 	        return parse_url($url, PHP_URL_PATH);
 	    }
+	}
+	
+	/**
+     * Generate new UUID token
+     * 
+     * @return string
+	 */
+	protected function generateUuid()
+	{
+	    if (!$this->uuidGenerator) {
+	        $this->uuidGenerator = new UuidGenerator();
+	    }
+	    
+	    return $this->uuidGenerator->generateV5($this->uuidGenerator->generateV4(), php_uname('n'));
 	}
 }
