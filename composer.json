@@ -1,7 +1,7 @@
 {
     "name": "valu/valufilestorage",
-    "description": "FileStorage module",
-    "version": "0.1.0",
+    "description": "File storage module for ZF2/Valu",
+    "version": "0.9.0",
     "type": "library",
     "keywords": [
         "valu"
