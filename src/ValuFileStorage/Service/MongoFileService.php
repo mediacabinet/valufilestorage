@@ -35,6 +35,8 @@ class MongoFileService extends AbstractFileService
 	 * @param string $targetUrl Target URL
 	 * @param array $metadata File metadata
 	 * @throws \ValuFileStorage\Service\Exception\FileNotFoundException
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function insert($sourceUrl, $targetUrl, array $metadata = array())
 	{
@@ -75,6 +77,8 @@ class MongoFileService extends AbstractFileService
 	 * @param string $url
 	 * @return string|boolean
 	 * @throws Exception\FileNotFoundException
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function read($url){
 	    
@@ -90,6 +94,8 @@ class MongoFileService extends AbstractFileService
 	 * @param string $url
 	 * @param string $data
 	 * @return boolean
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function write($url, $data){
 	    $this->testUrl($url);
@@ -110,6 +116,8 @@ class MongoFileService extends AbstractFileService
 	 * 
 	 * @param string $url    File URL
 	 * @return array|null File info (url, filesize, mimeType)
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function getMetadata($url)
 	{
@@ -122,6 +130,8 @@ class MongoFileService extends AbstractFileService
 	 * Retrieves the total file storage size in bytes
 	 *
 	 * @return int
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function totalSize($url = null)
 	{
@@ -145,6 +155,8 @@ class MongoFileService extends AbstractFileService
 	 *
 	 * @param string $url
 	 * @throws Exception\UnsupportedOperationException
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function getPath($url)
 	{
@@ -159,6 +171,8 @@ class MongoFileService extends AbstractFileService
 	 * 
 	 * @param string $url
 	 * @return string
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function getLocalCopy($url)
 	{
@@ -177,6 +191,8 @@ class MongoFileService extends AbstractFileService
 	 * 
 	 * @param string $url   File URL in filesystem
 	 * @return boolean		True if file was found and removed
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function delete($url)
 	{
@@ -199,6 +215,8 @@ class MongoFileService extends AbstractFileService
 	 * Delete all files in file storage
 	 * 
 	 * @return int Number of files deleted
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function deleteAll($url)
 	{

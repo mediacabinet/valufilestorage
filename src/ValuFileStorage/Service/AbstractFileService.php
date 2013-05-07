@@ -29,6 +29,8 @@ abstract class AbstractFileService
 	 *
 	 * @param string $url
 	 * @return boolean
+	 * 
+	 * @ValuService\Context({"cli", "native"})
 	 */
 	public function exists($url)
 	{

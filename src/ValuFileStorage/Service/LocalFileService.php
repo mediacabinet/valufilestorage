@@ -24,6 +24,8 @@ class LocalFileService extends AbstractFileService
      * @param string $targetUrl Target URL
      * @param array $metadata File metadata
      * @throws \ValuFileStorage\Service\Exception\FileNotFoundException
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function insert($sourceUrl, $targetUrl, array $metadata = array())
     {
@@ -52,6 +54,8 @@ class LocalFileService extends AbstractFileService
      * @param string $url
      * @return string|boolean
      * @throws Exception\FileNotFoundException
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function read($url){
          
@@ -67,6 +71,8 @@ class LocalFileService extends AbstractFileService
      * @param string $url
      * @param string $data
      * @return boolean True on success, false otherwise
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function write($url, $data){
          
@@ -82,6 +88,8 @@ class LocalFileService extends AbstractFileService
      * @param string $url    File URL
      * @return array|null File info (url, filesize, mimeType)
      * @throws \ValuFileStorage\Service\Exception\FileNotFoundException
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function getMetadata($url)
     {
@@ -95,6 +103,8 @@ class LocalFileService extends AbstractFileService
      * Retrieves the total file storage size in bytes
      *
      * @return int
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function totalSize($url = null)
     {
@@ -134,6 +144,8 @@ class LocalFileService extends AbstractFileService
      *
      * @param string $url
      * @return string
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function getPath($url)
     {
@@ -146,6 +158,8 @@ class LocalFileService extends AbstractFileService
      *
      * @param string $url
      * @return string
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function getLocalCopy($url)
     {
@@ -164,6 +178,8 @@ class LocalFileService extends AbstractFileService
      *
      * @param string $url   File URL in filesystem
      * @return boolean		True if file was found and removed
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function delete($url)
     {
@@ -186,6 +202,8 @@ class LocalFileService extends AbstractFileService
      * path
      *
      * @return int Number of files deleted
+     * 
+     * @ValuService\Context({"cli", "native"})
      */
     public function deleteAll($url)
     {
