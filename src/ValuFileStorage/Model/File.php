@@ -1,7 +1,7 @@
 <?php
 namespace ValuFileStorage\Model;
 
-use Valu\Model\ArrayAdapterTrait;
+use Valu\Model\ArrayAdapter\ArrayAdapterTrait;
 use Doctrine\MongoDB\GridFSFile;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
