@@ -23,6 +23,8 @@ return [
     ],
     'file_storage' => [
         'whitelist' => [
+            'tmp' => 'file:///tmp',
+            'tmp2' => 'file:///var/tmp',
             'tests' => 'file://.*/vendor/valu/valufilestorage/tests/resources/.*',
         ]
     ],

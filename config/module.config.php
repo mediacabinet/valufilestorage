@@ -39,13 +39,7 @@ return [
     ],
     'file_storage' => [
         'whitelist' => [
-            'tmp' => 'file:///var/tmp',
-            'tmp2' => 'file:///tmp',
-            'data' => 'file://' . realpath('data'),
-            'tests' => 'file://.*/vendor/[^/]+/tests/resources/.*',
-            'local' => 'http://zf2b\\.valu\\.fi/tests/.*',
-            'dev'   => 'http://development.mediacabinet.fi/.*',
-            'showell' => 'file:///var/www/showell/data/showell'
+            'tmp' => 'file://' . sys_get_temp_dir(),
         ]
     ],
 ];
