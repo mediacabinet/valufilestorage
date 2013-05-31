@@ -37,6 +37,13 @@ return [
             ],
         ],
     ],
+    'array_adapter' => [
+        'model_listener' => [
+            'namespaces' => [
+                'ValuFileStorage' => 'ValuFileStorage\\Model\\'
+            ]
+        ]
+    ],
     'file_storage' => [
         'whitelist' => [
             'tmp' => 'file://' . sys_get_temp_dir(),
