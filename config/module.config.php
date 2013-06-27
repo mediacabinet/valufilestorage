@@ -35,6 +35,10 @@ return [
                     ]
                 ],
             ],
+            'ValuFileStorageSetup' => [
+                'name' => 'ValuFileStorage.Setup',
+                'class' => 'ValuFileStorage\\Service\\SetupService'
+            ],
         ],
     ],
     'array_adapter' => [
