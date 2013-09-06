@@ -35,7 +35,18 @@ return [
                     ]
                 ],
             ],
+            'ValuFileStorageSetup' => [
+                'name' => 'ValuFileStorage.Setup',
+                'class' => 'ValuFileStorage\\Service\\SetupService'
+            ],
         ],
+    ],
+    'array_adapter' => [
+        'model_listener' => [
+            'namespaces' => [
+                'ValuFileStorage' => 'ValuFileStorage\\Model\\'
+            ]
+        ]
     ],
     'file_storage' => [
         'whitelist' => [
