@@ -178,7 +178,15 @@ class MongoFileService extends AbstractFileService
 	{
 	    $this->testUrl($url);
 	    
+	    $urlComponents = explode('/', $url);
+	    $baseName = array_pop($urlComponents);
+	    
 	    $tmpFile = tempnam(sys_get_temp_dir(), 'valu-temp');
+	    if (file_exists($tmpFile)) {
+	        unlink($tmpFile);
+	    }
+	    
+	    $tmpFile .= '-'.$baseName;
 	    
 	    $file = $this->getFileByUrl($url, true);
 	    $file->getFile()->write($tmpFile);

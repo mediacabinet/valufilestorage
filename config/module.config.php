@@ -39,7 +39,7 @@ return [
     ],
     'file_storage' => [
         'whitelist' => [
-            'tmp' => 'file://' . sys_get_temp_dir(),
+            'tmp' => 'file://.*' . sys_get_temp_dir(),
         ]
     ],
 ];
