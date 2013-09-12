@@ -1,26 +1,28 @@
 {
-    "name": "valu/valufilestorage",
-    "description": "File storage module for ZF2/Valu",
-    "version": "0.9.0",
-    "type": "library",
-    "keywords": [
-        "valu"
-    ],
-    "homepage": "http://www.mediacabinet.fi/",
-    "license": "BSD-3-Clause",
-    "require": {
-        "php": ">=5.4.0"
-    },
-    "require-dev": {
-        "valu/valucore": ">=0.9.0",
-        "valu/valuso": ">=0.9.0",
-        "zendframework/zendframework": ">=2.0",
-        "doctrine/doctrine-mongo-odm-module": "dev-master"
-    },
-    "autoload": {
-        "psr-0": {
-            "ValuFileStorage\\": "src/",
-            "ValuFileStorageTest\\": "tests/"
-        }
-    }
+	"name" : "valu/valufilestorage",
+	"description" : "File storage module for ZF2/Valu",
+	"version" : "0.9.0",
+	"type" : "library",
+	"keywords" : [
+		"valu"
+	],
+	"homepage" : "http://www.mediacabinet.fi/",
+	"license" : [
+		"BSD-3-Clause"
+	],
+	"require" : {
+		"php" : ">=5.4.0"
+	},
+	"require-dev" : {
+		"valu/valucore" : "dev-master",
+		"valu/valuso" : "dev-master",
+		"doctrine/doctrine-mongo-odm-module" : "dev-master",
+		"zendframework/zendframework" : ">=2.0"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"ValuFileStorage\\" : "src/",
+			"ValuFileStorageTest\\" : "tests/"
+		}
+	}
 }
