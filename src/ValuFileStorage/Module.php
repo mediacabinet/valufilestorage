@@ -3,28 +3,10 @@ namespace ValuFileStorage;
 
 use ValuFileStorage\Odm\DocumentManagerFactory;
 use Zend\ModuleManager\Feature;
-use Zend\EventManager\Event;
-use Zend\Loader\AutoloaderFactory;
-use Zend\Loader\StandardAutoloader;
 
 class Module
-    implements Feature\AutoloaderProviderInterface, 
-               Feature\ConfigProviderInterface
+    implements Feature\ConfigProviderInterface
 {
-    
-    /**
-     * {@inheritDoc}
-     */
-    public function getAutoloaderConfig()
-    {
-        return array(
-            AutoloaderFactory::STANDARD_AUTOLOADER => array(
-                StandardAutoloader::LOAD_NS => array(
-                    __NAMESPACE__ => __DIR__
-                ),
-            ),
-        );
-    }
     
     /**
      * {@inheritDoc}
