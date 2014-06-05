@@ -11,18 +11,26 @@
 		"BSD-3-Clause"
 	],
 	"require" : {
-		"php" : ">=5.4.0"
+		"php" : ">=5.4.0",
+		"zendframework/zendframework" : ">=2.0",
+		"doctrine/mongodb-odm" : "1.0.0-BETA9"
 	},
 	"require-dev" : {
 		"valu/valucore" : "dev-master",
 		"valu/valuso" : "dev-master",
+		"valu/valusetup" : "dev-master",
 		"doctrine/doctrine-mongo-odm-module" : "dev-master",
-		"zendframework/zendframework" : ">=2.0"
+		"doctrine/doctrine-mongo-odm-module" : "dev-master",
+        "doctrine/doctrine-module" : "dev-master as 0.8.x-dev"
 	},
 	"autoload" : {
 		"psr-0" : {
-			"ValuFileStorage\\" : "src/",
-			"ValuFileStorageTest\\" : "tests/"
+			"ValuFileStorage\\" : "src/"
 		}
-	}
+	},
+	"autoload-dev" : {
+        "psr-0" : {
+            "ValuFileStorageTest\\" : "tests/"
+        }
+    }
 }
