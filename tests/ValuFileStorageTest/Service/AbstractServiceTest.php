@@ -29,25 +29,20 @@ abstract class AbstractServiceTest extends TestCase
      */
     protected $serviceBroker;
     
+    /**
+     * @var Application
+     */
+    protected static $application;
+    
     public static function setUpBeforeClass()
     {
-        parent::setUpBeforeClass();
-    }
-    
-    /**
-     * Prepares the environment before running a test.
-     */
-    protected function setUp()
-    {
-        $this->triggered = new \ArrayObject();
-        
-        $this->application = Application::init([
+        self::$application = Application::init([
             'modules' => [
                 'DoctrineModule',
                 'DoctrineMongoODMModule',
-                'valucore',
-                'valuso',
-                'valufilestorage',
+                'ValuCore',
+                'ValuSo',
+                'ValuFileStorage',
             ],
             'module_listener_options' => [
                 'config_static_paths' => [__DIR__ . '/../../../config/tests.config.php'],
@@ -59,8 +54,21 @@ abstract class AbstractServiceTest extends TestCase
             ]
         ]);
         
-        $this->sm = $this->application->getServiceManager();
-        $this->serviceBroker = $this->sm->get('ServiceBroker');
+        foreach (['data/DoctrineMongoODMModule/Hydrator', 'data/DoctrineMongoODMModule/Proxy', __DIR__ . '/../../data/tmp'] as $dir) {
+        	if (!file_exists($dir)) {
+        		mkdir($dir, 0755, true);
+        	}
+        }
+    }
+    
+    /**
+     * Prepares the environment before running a test.
+     */
+    protected function setUp()
+    {
+        $this->triggered = new \ArrayObject();
+        $sm = self::$application->getServiceManager();
+        $this->serviceBroker = $sm->get('ServiceBroker');
     }
 
     /**
@@ -69,7 +77,7 @@ abstract class AbstractServiceTest extends TestCase
     protected function tearDown()
     {
         $this->triggered = null;
-        $this->application = null;
+        $this->serviceBroker = null;
         
         parent::tearDown();
     }
@@ -257,10 +265,10 @@ abstract class AbstractServiceTest extends TestCase
     public function testDeleteAll()
     {
         $this->service()->deleteAll(static::$urlScheme . '://');
-    
+        
         $this->assertEquals(
             0,
-            $this->service()->totalSize()
+            $this->service()->totalSize(static::$urlScheme . ':///')
         );
     }
     

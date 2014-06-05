@@ -13,16 +13,27 @@ class MongoFileServiceTest extends AbstractServiceTest
     
     protected static $urlPattern = '#^mongofs:///[a-zA-Z0-9\-]+/[^/]+$#';
     
+    protected $dm;
+    
     public function setUp()
     {
         parent::setUp();
         
         $this->serviceBroker->getLoader()->disableService('ValuFileStorageLocalFile');
         
-        $config   = $this->sm->get('Configuration');
-        $this->dm = $this->sm->get('ValuFileStorageDm');
+        $sm = self::$application->getServiceManager();
+        $config   = $sm->get('Configuration');
+        $this->dm = $sm->get('ValuFileStorageDm');
         $this->dm->getConnection()->dropDatabase($config['doctrine']['configuration']['odm_default']['default_db']);
         $this->dm->getSchemaManager()->ensureIndexes();
+    }
+    
+    protected function tearDown()
+    {
+    	$this->dm->clear();
+    	$this->dm = null;
+    	
+    	parent::tearDown();
     }
     
     public function testDeleteNonExisting()

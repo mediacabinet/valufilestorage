@@ -1,11 +1,18 @@
-<phpunit bootstrap="./bootstrap.php" colors="true">
-    <groups>
-        <exclude>
-        </exclude>
-    </groups>
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <filter>
-        <whitelist>
-        </whitelist>
-    </filter>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="./bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="ValuFileStorage Test Suite">
+            <directory>./ValuFileStorageTest/</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

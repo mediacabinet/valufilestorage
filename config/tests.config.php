@@ -14,8 +14,8 @@ return [
             'ValuFileStorageLocalFile' => [
                 'options' => [
                     'paths' => [
-                        'tmp' => realpath(__DIR__ .'/../tests/tmp'),
-                        'files' => realpath(__DIR__ .'/../tests/tmp'),
+                        'tmp' => __DIR__ .'/../tests/data/tmp',
+                        'files' => __DIR__ .'/../tests/data/tmp',
                     ]
                 ],
             ],
@@ -25,7 +25,7 @@ return [
         'whitelist' => [
             'tmp' => 'file:///tmp',
             'tmp2' => 'file:///var/tmp',
-            'tests' => 'file://.*/vendor/valu/valufilestorage/tests/resources/.*',
+            'tests' => 'file://.*/valufilestorage/tests/resources/.*',
         ]
     ],
 ];

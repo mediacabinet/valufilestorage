@@ -4,10 +4,15 @@
 */
 error_reporting( E_ALL | E_STRICT );
 
-ini_set('display_errors', 1);
-
-$applicationRoot = __DIR__ . '/../../../../';
-chdir($applicationRoot);
-
 // Setup autoloading
-include __DIR__ . '/_autoload.php';
+$autoloadScript = __DIR__ . '/../vendor/autoload.php';
+if (!file_exists($autoloadScript)) {
+    $autoloadScript = __DIR__ . '/../../../autoload.php';
+}
+
+if (!file_exists($autoloadScript)) {
+    throw new RuntimeException('vendor/autoload.php could not be found. Did you run `php composer.phar install`?');
+}
+
+$loader = include_once $autoloadScript;
+$loader->add('ValuFileStorageTest', __DIR__);
