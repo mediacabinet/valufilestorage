@@ -52,12 +52,11 @@ abstract class AbstractFileService
 	    $this->testUrl($targetUrl);
 	    
 	    $sourceUrl	= $this->canonicalUrl($sourceUrl);
-	    $path       = $this->parsePath($sourceUrl);
 	    $scheme		= $this->parseScheme($sourceUrl);
 	    $bytes      = null;
 	    $file		= null;
 	    
-	    if (!in_array($scheme, array('file', 'http', 'https'))) {
+	    if (!in_array($scheme, array('file', 'http', 'https', 'data'))) {
 	        throw new Exception\UnsupportedUrlException(
                 'Unsupported source URL scheme:%SCHEME%',
                 array('SCHEME' => $scheme));
@@ -72,6 +71,7 @@ abstract class AbstractFileService
 	    }
 	    
 	    if ($scheme == 'file') {
+	        $path = $this->parsePath($sourceUrl);
 	        $file = trim($path);
 	    
 	        if(!file_exists($file)){
@@ -79,7 +79,7 @@ abstract class AbstractFileService
 	                    'Local file %FILE% not found',
 	                    array('FILE' => $file));
 	        }
-	    } elseif (($bytes = file_get_contents($sourceUrl)) === false) {
+	    } elseif (($bytes = $this->readBytes($sourceUrl)) === false) {
 	        throw new Exception\FileNotFoundException(
 	                'Remote URL %URL% could not be read',
 	                array('URL' => $sourceUrl));
@@ -109,6 +109,10 @@ abstract class AbstractFileService
 	{
 	    $url = trim($url);
 	    
+	    if ($this->isDataUrl($url)) {
+	        return $url;
+	    }
+	    
 	    // Assume local URL if scheme is missing
 	    if (strpos($url, '://') === false) {
 	        $url = 'file://' . $url;
@@ -122,6 +126,20 @@ abstract class AbstractFileService
 	    }
 	    
 	    return $url;
+	}
+	
+	/**
+	 * Read bytes from source URL
+	 * 
+	 * @return string
+	 */
+	protected function readBytes($url)
+	{
+	    if ($this->isDataUrl($url)) {
+	        return $this->parseDataUrl($url, 'value', '');
+	    } else {
+	        return file_get_contents($url);
+	    }
 	}
 	
 	/**
@@ -206,14 +224,89 @@ abstract class AbstractFileService
 	    }
 	}
 	
+	/**
+	 * Parse scheme for URL
+	 * 
+	 * @param string $url
+	 * @return mixed|string
+	 */
 	protected function parseScheme($url)
 	{
 	    if (($scheme = parse_url($url, PHP_URL_SCHEME)) != false) {
 	        return $scheme;
-	    } elseif(strpos($url, '://') === false) {
+	    } else if($this->isDataUrl($url)) {
+	        return 'data';
+	    } else if(strpos($url, '://') === false) {
 	        return 'file';
 	    } else {
 	        return substr($url, 0, strpos($url, '://'));
+	    }
+	}
+	
+	/**
+	 * Test if given URL is a data URL (RFC 2397)
+	 * 
+	 * @param string $uri
+	 * @return boolean
+	 */
+	protected function isDataUrl($url)
+	{
+	    return stripos($url, 'data:') === 0;
+	}
+
+	/**
+	 * Parse spec from data URL
+	 *
+	 * @param string $url
+	 * @param string $spec
+	 * @param string $default
+	 * @return boolean|string
+	 */
+	protected function parseDataUrl($url, $spec, $default = '')
+	{
+	    $matchmap = [
+	        'mime_type' => 1,
+	        'charset'   => 2,
+	        'encoding'  => 3,
+	        'data'      => 4,
+	        'value'     => null
+	    ];
+	
+	    if (!array_key_exists($spec, $matchmap)) {
+	        return false;
+	    }
+	
+	    $matches = [];
+	    if (preg_match('/^data:([^;,]+)?(?:;charset=([a-z0-9\-]+))?(?:;(base64))?,(.*)/i', $url, $matches)) {
+	        
+	        if ($spec === 'value') {
+	            if (strtolower($matches[3]) === 'base64') {
+	                return base64_decode($matches[4]);
+	            } else {
+	                return urldecode($matches[4]);
+	            }
+	        } else {
+	            $key = $matchmap[$spec];
+	            return $matches[$key] !== '' ? $matches[$key] : $default;
+	        }
+	    } else {
+	        return false;
+	    }
+	}
+	
+	/**
+	 * Parse basename based on source URL
+	 * 
+	 * @param string $sourceUrl
+	 * @return string
+	 */
+	protected function parseBasename($sourceUrl)
+	{
+	    if ($this->isDataUrl($sourceUrl)) {
+	        $mimeType   = $this->parseDataUrl($sourceUrl, 'mime_type', 'text/plain');
+	        return 'data.' . str_replace('/', '_', $mimeType);
+	    } else {
+	        return basename($this->parsePath($sourceUrl));
 	    }
 	}
 	

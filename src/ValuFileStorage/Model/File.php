@@ -223,7 +223,7 @@ class File
 	 * 
 	 * @param string $mimeType
 	 */
-	protected function setMimeType($mimeType)
+	public function setMimeType($mimeType)
 	{
 		$this->mimeType = $mimeType;
 	}

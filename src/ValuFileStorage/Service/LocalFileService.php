@@ -254,8 +254,6 @@ class LocalFileService extends AbstractFileService
      */
     protected function fetchFileMetadata($file){
         
-        $finfo = new \finfo();
-        
         $items = explode(DIRECTORY_SEPARATOR, $file);
         $name = array_pop($items);
         $uuid = array_pop($items);
@@ -267,11 +265,18 @@ class LocalFileService extends AbstractFileService
         
         $mDate = new \DateTime();
         $mDate->setTimestamp(filemtime($file));
+        
+        if (preg_match('/^data\.([a-z]+\_.+)/', basename($file), $matches)) {
+            $mimeType = str_replace('_', '/', $matches[1]);
+        } else {
+            $finfo = new \finfo();
+            $mimeType = $finfo->file($file, FILEINFO_MIME_TYPE);
+        }
 
         return array(
             'url'          => $this->getOption('url_scheme') . ':///$'.$key . '/' . $uuid . '/' . $name,
             'filesize'     => filesize($file),
-            'mimeType'     => $finfo->file($file, FILEINFO_MIME_TYPE),
+            'mimeType'     => $mimeType,
             'createdAt'    => $cDate->format(DATE_ATOM),
             'modifiedAt'   => $mDate->format(DATE_ATOM),
         );
@@ -364,8 +369,8 @@ class LocalFileService extends AbstractFileService
     protected function makeFile($sourceUrl, $path)
     {
         $id       = $this->generateUuid();
-        $basename = basename($this->parsePath($sourceUrl));
         $dir      = $path . '/' . $id;
+        $basename = $this->parseBasename($sourceUrl);
         
         if (file_exists($dir)) {
             return $this->makeFile($sourceUrl, $path);

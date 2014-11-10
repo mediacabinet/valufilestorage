@@ -115,6 +115,51 @@ abstract class AbstractServiceTest extends TestCase
         );
     }
     
+    public function testInsertPlainTextDataUrl()
+    {
+        $text = "Test file";
+        $url = 'data:,' . urlencode($text);
+        $meta = $this->service()->insert($url, static::$defaultTarget);
+        
+        $this->assertEquals(
+            'text/plain',
+            $meta['mimeType']
+        );
+        
+        $this->assertEquals(
+            strlen($text),
+            $meta['filesize']
+        );
+        
+        $this->assertRegExp(
+            '/.*\/data.text_plain/',
+            $meta['url']
+        );
+    }
+    
+    public function testInsertBase64EncodedImageDataUrl()
+    {
+        $file = $this->filePath('images/lake.jpg');
+        
+        $url = 'data:image/jpeg;base64,' . base64_encode(file_get_contents($file));
+        $meta = $this->service()->insert($url, static::$defaultTarget);
+        
+        $this->assertEquals(
+            'image/jpeg',
+            $meta['mimeType']
+        );
+        
+        $this->assertEquals(
+            filesize($file),
+            $meta['filesize']
+        );
+        
+        $this->assertRegExp(
+            '/.*\/data.image_jpeg/',
+            $meta['url']
+        );
+    }
+    
     public function testExists()
     {
         $url  = $this->fileUrl('images/lake.jpg');

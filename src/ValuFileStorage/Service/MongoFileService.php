@@ -61,6 +61,11 @@ class MongoFileService extends AbstractFileService
 	        $file->setFile($specs['file']);
 	    } else {
 	        $file->setBytes($specs['bytes']);
+	        
+	        if ($this->isDataUrl($sourceUrl)) {
+	            $mimeType = $this->parseDataUrl($sourceUrl, 'mime_type', 'text/plain');
+	            $file->setMimeType($mimeType);
+	        }
 	    }
 	
 	    $this->getDocumentManager()->flush($file);
@@ -301,7 +306,7 @@ class MongoFileService extends AbstractFileService
 	 */
 	protected function generateUrl($sourceUrl){
 	    $id       = $this->generateUuid();
-	    $basename = basename(parse_url($sourceUrl, PHP_URL_PATH));
+	    $basename = $this->parseBasename($sourceUrl);
 	
 	    return $this->getOption('url_scheme') . ':///' . $id . '/' .$basename;
 	}
