@@ -12,13 +12,13 @@
 	],
 	"require" : {
 		"php" : ">=5.4.0",
-		"zendframework/zendframework" : ">=2.0",
-		"doctrine/mongodb-odm" : "1.0.0-BETA9"
+		"zendframework/zendframework" : ">=2.0"
 	},
 	"require-dev" : {
 		"valu/valucore" : "dev-master",
 		"valu/valuso" : "dev-master",
 		"valu/valusetup" : "dev-master",
+		"doctrine/mongodb-odm" : "1.0.0-BETA9",
 		"doctrine/doctrine-mongo-odm-module" : "dev-master",
 		"doctrine/doctrine-mongo-odm-module" : "dev-master",
         "doctrine/doctrine-module" : "dev-master as 0.8.x-dev"
