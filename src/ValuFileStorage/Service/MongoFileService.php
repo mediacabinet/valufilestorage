@@ -144,15 +144,14 @@ class MongoFileService extends AbstractFileService
 	        $this->testUrl($url);
 	    }
 	    
-	    $result = $this->getDocumentManager()
+	    $iterator = $this->getDocumentManager()
 	        ->getDocumentCollection('ValuFileStorage\Model\File')
 	        ->group(
 	            array(),
 	            array('sum' => 0),
 	            "function (obj, prev) { prev.sum += obj.length; }");
-	     
-	    return isset($result['retval'][0])
-	        ? $result['retval'][0]['sum'] : 0;
+	    $result = $iterator->getSingleResult();
+	    return $result ? $result['sum'] : 0;
 	}
 	
 	/**
