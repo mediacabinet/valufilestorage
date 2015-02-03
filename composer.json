@@ -1,7 +1,6 @@
 {
 	"name" : "valu/valufilestorage",
 	"description" : "File storage module for ZF2/Valu",
-	"version" : "0.9.0",
 	"type" : "library",
 	"keywords" : [
 		"valu"
@@ -13,16 +12,15 @@
 	"require" : {
 		"php" : ">=5.4.0",
 		"zendframework/zendframework" : ">=2.0"
+		"valu/valucore" : "1.*",
+		"valu/valuso" : "1.*",
+		"valu/valusetup" : "1.*",
+		"doctrine/mongodb-odm" : "dev-master",
+        "doctrine/doctrine-mongo-odm-module" : "dev-master"
 	},
-	"require-dev" : {
-		"valu/valucore" : "dev-master",
-		"valu/valuso" : "dev-master",
-		"valu/valusetup" : "dev-master",
-		"doctrine/mongodb-odm" : "1.0.0-BETA9",
-		"doctrine/doctrine-mongo-odm-module" : "dev-master",
-		"doctrine/doctrine-mongo-odm-module" : "dev-master",
-        "doctrine/doctrine-module" : "dev-master as 0.8.x-dev"
-	},
+	"require-dev": {
+       "doctrine/doctrine-module" : "0.8 as 0.9"
+    },
 	"autoload" : {
 		"psr-0" : {
 			"ValuFileStorage\\" : "src/"
