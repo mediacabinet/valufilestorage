@@ -1,11 +1,6 @@
 <?php
 return [
     'doctrine' => [
-        'connection' => [
-            'odm_default' => [
-                'server' => '127.0.0.1'
-            ]
-        ],
         'configuration' => [
             'odm_default' => [
                 'default_db' => 'valu_file_storage_test'
