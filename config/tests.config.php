@@ -3,7 +3,8 @@ return [
     'doctrine' => [
         'configuration' => [
             'odm_default' => [
-                'default_db' => 'valu_file_storage_test'
+                'default_db' => 'valu_file_storage_test',
+                'server' => '127.0.0.1'
             ]
         ]
     ],
