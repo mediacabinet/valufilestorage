@@ -24,6 +24,11 @@ class MongoFileServiceTest extends AbstractServiceTest
         $sm = self::$application->getServiceManager();
         $config   = $sm->get('Configuration');
         $this->dm = $sm->get('ValuFileStorageDm');
+        
+        if ($this->dm->getConnection()->isConnected()) {
+            $this->dm->getConnection()->connect();
+        }
+        
         $this->dm->getConnection()->dropDatabase($config['doctrine']['configuration']['odm_default']['default_db']);
         $this->dm->getSchemaManager()->ensureIndexes();
     }
