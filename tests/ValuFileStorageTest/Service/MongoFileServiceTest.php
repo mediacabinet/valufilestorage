@@ -39,7 +39,7 @@ class MongoFileServiceTest extends AbstractServiceTest
     public function testDeleteNonExisting()
     {
         $this->assertFalse(
-            self::service()->delete(static::$urlScheme . ':///does-not-exist')
+            $this->service()->delete(static::$urlScheme . ':///does-not-exist')
         );
     }
 	
