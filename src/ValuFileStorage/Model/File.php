@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @ODM\Document(collection="valu_file_storage")
+ * @ODM\HasLifecycleCallbacks
  */
 class File
 {
