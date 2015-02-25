@@ -1,33 +1,33 @@
 {
-	"name" : "valu/valufilestorage",
-	"description" : "File storage module for ZF2/Valu",
-	"type" : "library",
-	"keywords" : [
-		"valu"
-	],
-	"homepage" : "http://www.mediacabinet.fi/",
-	"license" : [
-		"BSD-3-Clause"
-	],
-	"require" : {
-		"php" : ">=5.4.0",
-		"ext-mongo": "*",
-		"zendframework/zendframework" : "2.*",
-		"valu/valucore" : "1.*",
-		"valu/valuso" : "1.*",
-		"valu/valusetup" : "1.*",
-		"doctrine/mongodb-odm" : "dev-master",
-        "doctrine/doctrine-mongo-odm-module" : "dev-master"
-	},
-	"require-dev": {
-       "doctrine/doctrine-module" : "0.8 as 0.9"
+    "name" : "valu/valufilestorage",
+    "description" : "File storage module for ZF2/Valu",
+    "type" : "library",
+    "keywords" : [
+        "valu"
+    ],
+    "homepage" : "http://www.mediacabinet.fi/",
+    "license" : [
+        "BSD-3-Clause"
+    ],
+    "require" : {
+        "php" : ">=5.4.0",
+        "ext-mongo": "*",
+        "zendframework/zendframework" : "2.*",
+        "valu/valucore" : "1.*",
+        "valu/valuso" : "1.*",
+        "valu/valusetup" : "1.*"
     },
-	"autoload" : {
-		"psr-0" : {
-			"ValuFileStorage\\" : "src/"
-		}
-	},
-	"autoload-dev" : {
+    "require-dev": {
+        "doctrine/mongodb-odm" : "dev-master",
+        "doctrine/doctrine-mongo-odm-module" : "dev-master",
+        "doctrine/doctrine-module" : "0.8 as 0.9"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "ValuFileStorage\\" : "src/"
+        }
+    },
+    "autoload-dev" : {
         "psr-0" : {
             "ValuFileStorageTest\\" : "tests/"
         }
