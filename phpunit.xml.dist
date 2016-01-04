@@ -8,11 +8,16 @@
          convertWarningsToExceptions="true"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="./bootstrap.php"
+         bootstrap="./tests/bootstrap.php"
 >
+    <php>
+        <env name="MONGO_SERVER" value="localhost"/>
+        <env name="MONGO_PORT" value="27017"/>
+    </php>
+
     <testsuites>
         <testsuite name="ValuFileStorage Test Suite">
-            <directory>./ValuFileStorageTest/</directory>
+            <directory>./tests/ValuFileStorageTest/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
