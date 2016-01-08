@@ -189,6 +189,21 @@ class MongoFileService extends AbstractFileService
 	    return $tmpFile;
 	}
 
+    /**
+     * Retrieve a resource to be used with PHP's file
+     * functions that deal with reading files
+     *
+     * @return resource
+     *
+     * @ValuService\Context({"native"})
+     */
+    public function getResource($url)
+    {
+        $this->testUrl($url);
+        $file = $this->getFileByUrl($url);
+        return $file->getResource();
+    }
+
 	/**
 	 * Delete file
 	 *
