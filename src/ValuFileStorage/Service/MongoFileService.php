@@ -183,7 +183,8 @@ class MongoFileService extends AbstractFileService
 	    $this->testUrl($url);
 
 	    $file = $this->getFileByUrl($url, true);
-        $tmpFile = sys_get_temp_dir() . '/valu-tmp-' . $file->getId() . '.' . pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+        $uniquePart = md5($file->getId() . ':' . rand() . ':' . microtime());
+        $tmpFile = sys_get_temp_dir() . '/valu-mdb-' . $uniquePart . '.' . pathinfo($file->getFilename(), PATHINFO_EXTENSION);
 	    $file->getFile()->write($tmpFile);
 
 	    return $tmpFile;
