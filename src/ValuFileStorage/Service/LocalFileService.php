@@ -2,7 +2,6 @@
 namespace ValuFileStorage\Service;
 
 use ValuFileStorage\Service\Exception;
-use ValuFileStorage\Model;
 
 /**
  * Local file storage implementation
@@ -271,9 +270,28 @@ class LocalFileService extends AbstractFileService
 
         $items = explode(DIRECTORY_SEPARATOR, $file);
         $name = array_pop($items);
-        $uuid = array_pop($items);
-        $path = implode(DIRECTORY_SEPARATOR, $items);
-        $key  = array_search($path, $this->getOption('paths'));
+        $relativePath = [];
+        $path = "";
+        $pathKey = false;
+
+        // pop items until we reach path that points to
+        // a valid storage path
+        while (sizeof($items)) {
+            array_unshift($relativePath, array_pop($items));
+
+            $path = implode(DIRECTORY_SEPARATOR, $items);
+            $pathKey = array_search($path, $this->getOption('paths'));
+
+            if ($pathKey !== false) {
+                break;
+            }
+        }
+
+        // if path doesn't point to a valid storage path,
+        // return null
+        if ($pathKey === false || $path === "") {
+            return null;
+        }
 
         $cDate = new \DateTime();
         $cDate->setTimestamp(filectime($file));
@@ -289,7 +307,7 @@ class LocalFileService extends AbstractFileService
         }
 
         return array(
-            'url'          => $this->getOption('url_scheme') . ':///$'.$key . '/' . $uuid . '/' . $name,
+            'url'          => $this->getOption('url_scheme') . ':///$' . $pathKey . '/' . implode('/', $relativePath) . '/' . $name,
             'filesize'     => filesize($file),
             'mimeType'     => $mimeType,
             'createdAt'    => $cDate->format(DATE_ATOM),
@@ -384,15 +402,23 @@ class LocalFileService extends AbstractFileService
     protected function makeFile($sourceUrl, $path)
     {
         $id       = $this->generateUuid();
-        $dir      = $path . '/' . $id;
+        $dir      = $path;
         $basename = $this->parseBasename($sourceUrl);
+        $intermediate = $this->getOption('hashed_dir_levels');
+        $intermediate = min($intermediate, (strlen($id) / 2));
+
+        for ($i = 0; $i < $intermediate; $i++) {
+            $dir .= DIRECTORY_SEPARATOR . substr($id, ($i * 2), 2);
+        }
+
+        $dir .= DIRECTORY_SEPARATOR . $id;
 
         if (file_exists($dir)) {
             return $this->makeFile($sourceUrl, $path);
         } else {
-            mkdir($dir);
+            mkdir($dir, 0755, true);
         }
 
-        return $dir . '/' .$basename;
+        return $dir . DIRECTORY_SEPARATOR . $basename;
     }
 }

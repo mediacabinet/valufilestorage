@@ -29,6 +29,7 @@ return [
                 'factory' => 'ValuFileStorage\\Service\\LocalFileServiceFactory',
                 'options' => [
                     'url_scheme' => 'file',
+                    'hashed_dir_levels' => 0,
                     'paths' => [
                         'tmp' => 'data/filestorage/tmp',
                         'files' => 'data/filestorage/files',

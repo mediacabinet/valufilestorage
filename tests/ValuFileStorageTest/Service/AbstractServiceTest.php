@@ -54,11 +54,28 @@ abstract class AbstractServiceTest extends TestCase
             ]
         ]);
 
+        self::rmDirRecursive(__DIR__ . '/../../data/tmp');
+
         foreach (['data/DoctrineMongoODMModule/Hydrator', 'data/DoctrineMongoODMModule/Proxy', __DIR__ . '/../../data/tmp'] as $dir) {
         	if (!file_exists($dir)) {
         		mkdir($dir, 0755, true);
         	}
         }
+    }
+
+    public static function rmDirRecursive($dir)
+    {
+        $files = array_diff(scandir($dir), array('.', '..'));
+
+        foreach ($files as $file) {
+            if(is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
+                self::rmDirRecursive($dir . DIRECTORY_SEPARATOR . $file);
+            } else {
+                unlink($dir . DIRECTORY_SEPARATOR . $file);
+            }
+        } 
+
+        return rmdir($dir);
     }
 
     /**
