@@ -22,7 +22,7 @@ class File
 	/**
 	 * Physical file location
 	 *
-	 * @ODM\String
+	 * @ODM\Field(type="string")
 	 * @var string
 	 */
 	protected $url;
@@ -30,25 +30,25 @@ class File
 	/**
 	 * File
 	 *
-	 * @ODM\File
+	 * @ODM\Field(type="file")
 	 * @var string
 	 */
 	protected $file;
 
 	/**
-	 * @ODM\String
+	 * @ODM\Field(type="string")
 	 * @var string
 	 */
 	protected $mimeType;
 
 	/**
-	 * @ODM\Date
+	 * @ODM\Field(type="date")
 	 * @var DateTime
 	 */
 	protected $createdAt;
 
 	/**
-	 * @ODM\Date
+	 * @ODM\Field(type="date")
 	 * @var DateTime
 	 */
 	protected $modifiedAt;
